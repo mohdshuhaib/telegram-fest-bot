@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.responses import PlainTextResponse
 import threading
 import uvicorn
@@ -78,8 +78,8 @@ DATA = {
 # === Keep Alive Server for UptimeRobot ===
 app_fastapi = FastAPI()
 
-@app_fastapi.get("/", response_class=PlainTextResponse)
-def read_root():
+@app_fastapi.api_route("/", methods=["GET", "HEAD"], response_class=PlainTextResponse)
+def read_root(request: Request):
     return "Bot is alive"
 
 def run_server():
