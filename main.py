@@ -1,4 +1,8 @@
 import os
+from fastapi import FastAPI
+import threading
+import uvicorn
+
 from telegram import (
     Update,
     ReplyKeyboardMarkup,
@@ -69,6 +73,21 @@ DATA = {
         "Class 6": class_6_students
     }
 }
+
+# === Keep Alive Server for UptimeRobot ===
+app_fastapi = FastAPI()
+
+@app_fastapi.get("/")
+def read_root():
+    return {"message": "Bot is alive"}
+
+def run_server():
+    uvicorn.run(app_fastapi, host="0.0.0.0", port=8000)
+
+def keep_alive():
+    thread = threading.Thread(target=run_server)
+    thread.start()
+
 
 PAGE_SIZE = 5  # Show 5 docs per page
 
@@ -324,6 +343,8 @@ async def callback_query_handler(update: Update, context: ContextTypes.DEFAULT_T
         await query.answer(f"You are on page {current_page + 1} of {total_pages}", show_alert=False)
 
 def main():
+    keep_alive()  # start FastAPI server for uptime monitoring
+
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
@@ -333,5 +354,3 @@ def main():
     print("Bot started...")
     app.run_polling()
 
-if __name__ == "__main__":
-    main()
