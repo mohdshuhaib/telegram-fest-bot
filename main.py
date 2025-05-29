@@ -80,7 +80,7 @@ app_fastapi = FastAPI()
 
 @app_fastapi.get("/", response_class=PlainTextResponse)
 def read_root():
-    return {"message": "Bot is alive"}
+    return "Bot is alive"
 
 def run_server():
     uvicorn.run(app_fastapi, host="0.0.0.0", port=8000)
