@@ -1,3 +1,4 @@
+import os
 from telegram import (
     Update,
     ReplyKeyboardMarkup,
@@ -17,7 +18,7 @@ from telegram.ext import (
 import asyncio
 
 # Replace with your real bot token
-BOT_TOKEN = '7510139589:AAHaooPMwaf3Kbb3qIW_lu7qAcdSMig3loM'  # Replace this
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 
 # === Student Data ===
 class_1_students = {
